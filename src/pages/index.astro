@@ -1,0 +1,21 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../content/site";
+import { getEntry } from "astro:content";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: site.name,
+  url: site.url,
+  inLanguage: "en"
+};
+
+const homeEntry = await getEntry("pages", "home");
+const { Content: HomeContent } = homeEntry ? await homeEntry.render() : { Content: null };
+---
+<Base title={site.name} description={site.description} canonicalPath="/" jsonLd={jsonLd}>
+  <article class="prose">
+    {HomeContent ? <HomeContent /> : null}
+  </article>
+</Base>
